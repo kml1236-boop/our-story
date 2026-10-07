@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>مساحة خاصة 🤍</title>
+  
+  <!-- وسوم المعاينة للإنستقرام والواتساب لمنع حرق المفاجأة نهائياً -->
+  <meta name="description" content="شي مسويه لك وحدك.. افتحي الرابط وشوفيه ✨🔒">
+  <meta property="og:title" content="مساحة خاصة 🤍">
+  <meta property="og:description" content="شي مسويه لك وحدك.. افتحي الرابط وشوفيه ✨🔒">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1200&h=630&q=80">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:type" content="website">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="مساحة خاصة 🤍">
+  <meta name="twitter:description" content="شي مسويه لك وحدك.. افتحي الرابط وشوفيه ✨🔒">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1200&h=630&q=80">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #fcf8f7;
+      --deep-wine: #35131d;
+      --soft-wine: #5c2736;
+      --warm-rose: #be6179;
+      --glow-pink: #f6dbe2;
+      --line-subtle: rgba(190, 97, 121, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'IBM Plex Sans Arabic', -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg);
+      background: radial-gradient(circle at 85% 12%, #fbebef 0%, var(--bg) 65%);
+      transition: background 0.8s ease;
+    }
+
+    body.candle-mode {
+      background: radial-gradient(circle at 50% 40%, #1f0b13 0%, #0d0306 90%) !important;
+    }
+
+    .app-screen {
+      width: 100%;
+      height: 100dvh;
+      max-width: 520px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    @media (min-width: 768px) {
+      .app-screen { max-width: 640px; }
+      .title { font-size: 36px !important; margin-bottom: 26px !important; }
+      .text { font-size: 20px !important; line-height: 2.1 !important; margin-bottom: 32px !important; }
+      .foot-note { font-size: 17px !important; padding-top: 24px !important; }
+      .prep-title { font-size: 34px !important; }
+      .prep-text { font-size: 19px !important; line-height: 2.1 !important; }
+      .candle-title { font-size: 26px !important; }
+      .candle-sub { font-size: 17px !important; }
+      .num-btn { width: 80px !important; height: 80px !important; font-size: 28px !important; }
+      .numpad { grid-template-columns: repeat(3, 80px) !important; gap: 16px 28px !important; }
+    }
+
+    /* 1. شاشة القفل */
+    #stage-passcode {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: calc(env(safe-area-inset-top) + 28px) 24px calc(env(safe-area-inset-bottom) + 24px);
+      z-index: 50;
+      position: relative;
+    }
+
+    .lock-header { text-align: center; margin-top: 15px; }
+    .lock-icon { font-size: 30px; margin-bottom: 12px; display: inline-block; }
+    .lock-title { font-size: 24px; font-weight: 700; color: var(--deep-wine); margin-bottom: 8px; }
+    .lock-hint { font-size: 15px; color: var(--soft-wine); opacity: 0.9; }
+
+    .pin-dots { display: flex; justify-content: center; gap: 16px; margin: 30px 0 10px; }
+    .pin-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1.5px solid var(--warm-rose);
+      transition: all 0.2s ease;
+    }
+    .pin-dot.filled {
+      background-color: var(--deep-wine);
+      border-color: var(--deep-wine);
+      transform: scale(1.15);
+    }
+    .pin-dots.error { animation: shake 0.4s ease; }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .numpad {
+      display: grid;
+      grid-template-columns: repeat(3, 74px);
+      gap: 14px 24px;
+      justify-content: center;
+      margin: 0 auto 10px;
+      touch-action: manipulation;
+    }
+
+    .num-btn {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      border: 1px solid rgba(190, 97, 121, 0.22);
+      background: #ffffff;
+      color: var(--deep-wine);
+      font-size: 26px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      touch-action: manipulation;
+      box-shadow: 0 4px 14px rgba(53, 19, 29, 0.05);
+      transition: all 0.15s ease;
+    }
+    .num-btn:hover { background: #fff8f9; transform: translateY(-1px); }
+    .num-btn:active { background: var(--glow-pink); transform: scale(0.92); }
+    .num-spacer { width: 74px; height: 74px; }
+    .action-key { border: none; background: transparent; box-shadow: none; font-size: 22px; }
+
+    /* 2. شاشة الشمعة */
+    #stage-candle {
+      display: none;
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 30px;
+      z-index: 50;
+      position: relative;
+    }
+
+    .candle-scene { display: flex; flex-direction: column; align-items: center; cursor: pointer; touch-action: manipulation; }
+    .candle-container { position: relative; width: 60px; height: 150px; margin-bottom: 50px; }
+
+    .candle-glow {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle, rgba(255, 170, 70, 0.28) 0%, rgba(255, 100, 30, 0.08) 50%, transparent 75%);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: glowBreathe 3s infinite ease-in-out;
+      transition: opacity 0.5s ease;
+    }
+
+    @keyframes glowBreathe {
+      0%, 100% { opacity: 0.85; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.12); }
+    }
+
+    .candle-flame {
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 34px;
+      background: radial-gradient(ellipse at 50% 85%, #4fa3e3 0%, #ff8300 28%, #ffd000 65%, #fffdf0 100%);
+      border-radius: 50% 50% 35% 35% / 60% 60% 40% 40%;
+      box-shadow: 0 0 16px 2px rgba(255, 180, 50, 0.8), 0 0 35px 8px rgba(255, 100, 20, 0.4);
+      animation: flameWobble 2.2s infinite ease-in-out;
+      transform-origin: 50% 90%;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+      z-index: 5;
+    }
+
+    @keyframes flameWobble {
+      0%, 100% { transform: translateX(-50%) rotate(-1deg) scale(1, 1); }
+      30% { transform: translateX(-48%) rotate(1.5deg) scale(0.98, 1.04); }
+      65% { transform: translateX(-52%) rotate(-2deg) scale(1.02, 0.97); }
+    }
+
+    .candle-flame.blown { transform: translateX(-50%) scale(0) !important; opacity: 0 !important; }
+
+    .candle-wick {
+      position: absolute;
+      top: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3.5px;
+      height: 14px;
+      background: #2b1810;
+      border-radius: 2px;
+      z-index: 4;
+    }
+
+    .wick-ember {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3.5px;
+      height: 3.5px;
+      background: #ff3b00;
+      border-radius: 50%;
+      box-shadow: 0 0 6px 2px #ff3b00;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .wick-ember.glowing { opacity: 1; animation: emberFade 2.5s forwards ease-out; }
+
+    @keyframes emberFade {
+      0% { opacity: 1; }
+      80% { opacity: 0.8; }
+      100% { opacity: 0; }
+    }
+
+    .smoke-stream {
+      position: absolute;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      background: rgba(220, 220, 220, 0.45);
+      border-radius: 50%;
+      filter: blur(5px);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .smoke-stream.active { animation: realisticSmoke 2.6s forwards ease-out; }
+
+    @keyframes realisticSmoke {
+      0% { opacity: 0.6; transform: translate(-50%, 0) scale(1); }
+      40% { opacity: 0.4; transform: translate(-30%, -35px) scale(3.5); }
+      75% { opacity: 0.2; transform: translate(-70%, -80px) scale(6); }
+      100% { opacity: 0; transform: translate(-40%, -125px) scale(9); }
+    }
+
+    .candle-wax-body {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 44px;
+      height: 105px;
+      background: linear-gradient(to right, #e8d3dc 0%, #fff2f6 30%, #f7dbe4 75%, #cca6b6 100%);
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+      z-index: 3;
+    }
+
+    .candle-top-lip {
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 44px;
+      height: 14px;
+      background: radial-gradient(ellipse at 50% 50%, #dfbfcc 0%, #fcecf1 60%, #eed0dc 100%);
+      border-radius: 50%;
+      box-shadow: inset 0 2px 3px rgba(60, 20, 30, 0.25);
+      z-index: 3;
+    }
+
+    .candle-title { font-size: 22px; font-weight: 700; color: #ffeef2; line-height: 1.5; margin-bottom: 12px; max-width: 320px; transition: all 0.4s ease; }
+    .candle-sub { font-size: 15px; color: #e5a4b7; line-height: 1.6; }
+
+    /* 3. صفحة التهيئة */
+    #stage-prep {
+      display: none;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: calc(env(safe-area-inset-top) + 36px) 28px calc(env(safe-area-inset-bottom) + 32px);
+      z-index: 50;
+      position: relative;
+      animation: smoothFadeIn 0.8s ease forwards;
+    }
+
+    @keyframes smoothFadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .prep-box { margin: auto 0; }
+    .prep-badge { font-size: 13.5px; font-weight: 600; color: var(--warm-rose); margin-bottom: 14px; display: inline-block; }
+    .prep-title { font-size: 28px; font-weight: 700; color: var(--deep-wine); line-height: 1.4; margin-bottom: 20px; }
+    .prep-text { font-size: 17.5px; color: var(--soft-wine); line-height: 1.95; margin-bottom: 24px; }
+    .prep-note { font-size: 15px; color: var(--deep-wine); padding-top: 18px; border-top: 1px solid var(--line-subtle); line-height: 1.7; }
+
+    .btn-start-story {
+      width: 100%;
+      height: 56px;
+      background: var(--deep-wine);
+      color: #fff;
+      font-size: 16.5px;
+      font-weight: 600;
+      border: none;
+      border-radius: 28px;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(53, 19, 29, 0.2);
+      transition: all 0.2s ease;
+      touch-action: manipulation;
+    }
+    .btn-start-story:hover { opacity: 0.95; transform: translateY(-1px); }
+    .btn-start-story:active { transform: scale(0.97); }
+
+    /* 4. موقع الذكريات */
+    #stage-main {
+      display: none;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: calc(env(safe-area-inset-top) + 24px) 26px calc(env(safe-area-inset-bottom) + 24px);
+      z-index: 50;
+      position: relative;
+    }
+
+    #confetti-canvas {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .stories-nav { display: flex; gap: 6px; width: 100%; z-index: 10; }
+    .story-line { flex: 1; height: 2.5px; background: rgba(53, 19, 29, 0.08); border-radius: 4px; overflow: hidden; }
+    .story-fill { width: 0%; height: 100%; background: var(--soft-wine); transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+    .story-line.filled .story-fill { width: 100%; }
+    .story-line.active .story-fill { width: 100%; }
+
+    .stage { flex: 1; position: relative; display: flex; align-items: center; margin: 20px 0; }
+    .slide { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
+    .slide.active { opacity: 1; pointer-events: auto; }
+
+    .anim-tag, .anim-title, .anim-text, .anim-foot { opacity: 0; transform: translateY(22px); filter: blur(8px); }
+    .slide.active .anim-tag { animation: calmReveal 1s 0.15s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+    .slide.active .anim-title { animation: calmReveal 1.1s 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+    .slide.active .anim-text { animation: calmReveal 1.2s 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+    .slide.active .anim-foot { animation: calmReveal 1.2s 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+
+    @keyframes calmReveal { to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+
+    .tag { font-size: 13.5px; font-weight: 600; color: var(--warm-rose); letter-spacing: 0.5px; margin-bottom: 14px; display: inline-block; }
+    .title { font-size: 30px; font-weight: 700; color: var(--deep-wine); line-height: 1.35; margin-bottom: 22px; letter-spacing: -0.3px; }
+    .text { font-size: 17.5px; font-weight: 400; color: var(--soft-wine); line-height: 1.9; margin-bottom: 26px; }
+    .foot-note { font-size: 15px; font-weight: 500; color: var(--deep-wine); line-height: 1.7; padding-top: 20px; border-top: 1px solid var(--line-subtle); }
+
+    .secret-box {
+      background: #ffffff;
+      border: 1px solid rgba(190, 97, 121, 0.2);
+      border-radius: 26px;
+      padding: 38px 24px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 12px 30px -10px rgba(53, 19, 29, 0.06);
+      transition: all 0.3s ease;
+      touch-action: manipulation;
+    }
+    .secret-box:hover { box-shadow: 0 16px 36px -8px rgba(53, 19, 29, 0.09); transform: translateY(-2px); }
+    .secret-box:active { transform: scale(0.97); }
+
+    .tap-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: var(--glow-pink);
+      color: var(--deep-wine);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 16px;
+      animation: softGlow 2.8s infinite ease-in-out;
+    }
+
+    @keyframes softGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(190, 97, 121, 0.2); }
+      50% { transform: scale(1.06); box-shadow: 0 0 0 12px rgba(190, 97, 121, 0); }
+    }
+
+    .unlocked-content { display: none; text-align: right; }
+    .unlocked-content.show-slow { display: block; animation: letterSlowEntrance 1.4s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    @keyframes letterSlowEntrance {
+      0% { opacity: 0; transform: translateY(26px) scale(0.97); filter: blur(10px); }
+      100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+
+    .bottom-bar { display: flex; align-items: center; justify-content: space-between; z-index: 10; }
+    .page-index { font-size: 13.5px; font-weight: 500; color: var(--soft-wine); opacity: 0.8; }
+    .nav-buttons { display: flex; align-items: center; gap: 10px; }
+
+    .btn {
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--deep-wine);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      touch-action: manipulation;
+    }
+    .btn:hover { background: rgba(53, 19, 29, 0.04); }
+    .btn.primary {
+      background: var(--deep-wine);
+      color: #ffffff;
+      padding: 12px 26px;
+      border-radius: 30px;
+      box-shadow: 0 6px 18px rgba(53, 19, 29, 0.15);
+    }
+    .btn.primary:hover { opacity: 0.94; transform: translateY(-1px); }
+    .btn:disabled { opacity: 0.2; pointer-events: none; }
+    .btn:active { transform: scale(0.97); }
+  </style>
+</head>
+<body>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="app-screen">
+
+    <!-- 1. شاشة القفل -->
+    <section id="stage-passcode">
+      <div class="lock-header">
+        <span class="lock-icon">🔒</span>
+        <h1 class="lock-title">مساحة خاصة</h1>
+        <p class="lock-hint">تلميح: سنة أول يوم عرفتك فيها؟</p>
+        
+        <div class="pin-dots" id="dots-container">
+          <div class="pin-dot"></div>
+          <div class="pin-dot"></div>
+          <div class="pin-dot"></div>
+          <div class="pin-dot"></div>
+        </div>
+      </div>
+
+      <div class="numpad" dir="ltr">
+        <button type="button" class="num-btn" onclick="pressKey('1')">1</button>
+        <button type="button" class="num-btn" onclick="pressKey('2')">2</button>
+        <button type="button" class="num-btn" onclick="pressKey('3')">3</button>
+        <button type="button" class="num-btn" onclick="pressKey('4')">4</button>
+        <button type="button" class="num-btn" onclick="pressKey('5')">5</button>
+        <button type="button" class="num-btn" onclick="pressKey('6')">6</button>
+        <button type="button" class="num-btn" onclick="pressKey('7')">7</button>
+        <button type="button" class="num-btn" onclick="pressKey('8')">8</button>
+        <button type="button" class="num-btn" onclick="pressKey('9')">9</button>
+        <div class="num-spacer"></div>
+        <button type="button" class="num-btn" onclick="pressKey('0')">0</button>
+        <button type="button" class="num-btn action-key" onclick="deleteKey()">⌫</button>
+      </div>
+    </section>
+
+    <!-- 2. شاشة الشمعة -->
+    <section id="stage-candle">
+      <div class="candle-scene" onclick="blowCandle()">
+        <div class="candle-container">
+          <div class="candle-glow" id="candle-glow"></div>
+          <div class="candle-flame" id="flame"></div>
+          <div class="smoke-stream" id="smoke"></div>
+          <div class="candle-wick">
+            <div class="wick-ember" id="ember"></div>
+          </div>
+          <div class="candle-top-lip"></div>
+          <div class="candle-wax-body"></div>
+        </div>
+
+        <h2 class="candle-title" id="candle-text">غمضي عينك، تمني امنية من قلبك...</h2>
+        <p class="candle-sub" id="candle-subtext">والمسي الشمعه عشان تطفينها 🕯️</p>
+      </div>
+    </section>
+
+    <!-- 3. صفحة التهيئة -->
+    <section id="stage-prep">
+      <div class="prep-box">
+        <span class="prep-badge">قبل لا نبدأ</span>
+        <h1 class="prep-title">خذي نفس عميق الحين</h1>
+        <p class="prep-text">
+          وادري الكلام اللي بيجي بعد شوي يمكن يحرك بقلبك مشاعر وتفاصيل كثيره بس حبيت اكتب لك من قلبي بدون اي تكلف وبنفس عفويتنا وسوالفنا
+        </p>
+        <p class="prep-note">
+          اقريها بروقان وهداوه وكل ما صرتي جاهزة اضغطي ونمشي سوا
+        </p>
+      </div>
+
+      <button type="button" class="btn-start-story" onclick="enterStory()">جاهزة، نبدا سوا؟ ✨</button>
+    </section>
+
+    <!-- 4. موقع الذكريات -->
+    <section id="stage-main">
+      
+      <div class="stories-nav">
+        <div class="story-line active"><div class="story-fill"></div></div>
+        <div class="story-line"><div class="story-fill"></div></div>
+        <div class="story-line"><div class="story-fill"></div></div>
+        <div class="story-line"><div class="story-fill"></div></div>
+        <div class="story-line"><div class="story-fill"></div></div>
+        <div class="story-line"><div class="story-fill"></div></div>
+      </div>
+
+      <main class="stage" id="touch-area">
+
+        <!-- 0: البداية -->
+        <article class="slide active">
+          <span class="tag anim-tag">حكايتنا الحلوة</span>
+          <h1 class="title anim-title">أربع سنين مرت بكل ما فيها</h1>
+          <p class="text anim-text">
+            ما هان علي أرسل لك رسالة عادية تضيع بين الرسايل، حبيت أسوي لك مساحة خاصة فينا وحدنا نرجع فيها لأيامنا وسنيننا خطوة بخطوة.
+          </p>
+          <p class="foot-note anim-foot">
+            اسحبي الشاشة ونرجع لأول حكايتنا.
+          </p>
+        </article>
+
+        <!-- 1: السنة الأولى -->
+        <article class="slide">
+          <span class="tag anim-tag">السنة الأولى</span>
+          <h2 class="title anim-title">يوم كنتي أحلى صدفة</h2>
+          <p class="text anim-text">
+            تتذكرين اول سوالفنا كيف كانت عادية بس ما كان يمر يوم إلا وأنا مشتاق أكلمك؟ مدري كيف صرتي بلحظة كل تفكيري وصرت أبتسم للجوال أول ما يطلع اسمك.
+          </p>
+          <p class="foot-note anim-foot">
+            من اول شهر عرفت ان مكانك بقلبي بيكون غير عن الكل.
+          </p>
+        </article>
+
+        <!-- 2: السنة الثانية -->
+        <article class="slide">
+          <span class="tag anim-tag">السنة الثانية</span>
+          <h2 class="title anim-title">يوم كسرنا البعد والمسافة</h2>
+          <p class="text anim-text">
+            حتى والمسافة بينا بعيدة والله ما قد حسيت إنك بعيدة عني دقيقة. صرتي انتي أول شخص أركض له بكل فرحة وبكل تفصيلة بيومي، وعرفنا إن اللي بالقلب ما يقدر يغيره بعد المسافة.
+          </p>
+          <p class="foot-note anim-foot">
+            كل يوم كان يثبت لي إن قلوبنا أقرب من أي شي.
+          </p>
+        </article>
+
+        <!-- 3: السنة الثالثة -->
+        <article class="slide">
+          <span class="tag anim-tag">السنة الثالثة</span>
+          <h2 class="title anim-title">صرتي لي أمان وراحة بال</h2>
+          <p class="text anim-text">
+            سنة كاملة تعلمنا فيها نفهم بعض من نظرة وسكوت قبل الكلام. صرت أعرف نبرتك متى تكونين مضايقة وأفهم فرحتك قبل ما تحكين. ما عاد صار بس حب، صار أمان ما استغني عنه أبداً.
+          </p>
+          <p class="foot-note anim-foot">
+            وجودك جنبي هو الهدوء اللي يدور عليه قلبي دايم.
+          </p>
+        </article>
+
+        <!-- 4: السنة الرابعة -->
+        <article class="slide">
+          <span class="tag anim-tag">السنة الرابعة</span>
+          <h2 class="title anim-title">اليوم وأنا أشوفك كل سنيني</h2>
+          <p class="text anim-text">
+            أربع سنين كبرنا فيها سوا وتغيرت أشياء كثيرة، بس غلاك بكل يوم يمر يزيد وما ينقص. كل ما طالعت ورى حمدت ربي ألف مرة إنك أنتي اللي تشاركين عمري وأيامي.
+          </p>
+          <p class="foot-note anim-foot">
+            أغلى سنين العمر وبداية لكل سنيننا الجاية.
+          </p>
+        </article>
+
+        <!-- 5: الختام -->
+        <article class="slide">
+          <div id="closed-seal" class="secret-box anim-title" onclick="triggerPinkCelebration()">
+            <div class="tap-icon">✉</div>
+            <h3 style="font-size: 19px; color: var(--deep-wine); margin-bottom: 6px;">كلام من قلبي لك</h3>
+            <p style="font-size: 14px; color: var(--soft-wine);">المسي هنا عشان تفتحينها</p>
+          </div>
+
+          <div id="opened-seal" class="unlocked-content">
+            <span class="tag">اليوم لك وحدك</span>
+            <h2 class="title">كل عام وانتي أجمل أشيائي</h2>
+            <p class="text">
+              كل عام وأنتي حبيبتي وراحتي، وعسى سنينك الجاية كلها ضحك وتوفيق وراحة بال تشبه بياض قلبك. تبقين دايم أغلى وأحن من مر بحياتي.
+            </p>
+            <p class="foot-note">
+              كل سنة وانتي الخير لعمرك ولي🤎
+            </p>
+          </div>
+        </article>
+
+      </main>
+
+      <footer class="bottom-bar">
+        <div class="page-index" id="counter">1 من 6</div>
+        <div class="nav-buttons">
+          <button class="btn" id="btn-back" onclick="changeSlide(-1)" disabled>رجوع</button>
+          <button class="btn primary" id="btn-next" onclick="changeSlide(1)">التالي</button>
+        </div>
+      </footer>
+
+    </section>
+
+  </div>
+
+  <script>
+    const CORRECT_PIN = "2022";
+    let enteredPin = "";
+
+    function pressKey(num) {
+      if (enteredPin.length < 4) {
+        enteredPin += num;
+        updateDots();
+        if (enteredPin.length === 4) checkPin();
+      }
+    }
+
+    function deleteKey() {
+      if (enteredPin.length > 0) {
+        enteredPin = enteredPin.slice(0, -1);
+        updateDots();
+      }
+    }
+
+    function updateDots() {
+      const dots = document.querySelectorAll('.pin-dot');
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('filled', index < enteredPin.length);
+      });
+    }
+
+    function checkPin() {
+      if (enteredPin === CORRECT_PIN) {
+        setTimeout(() => {
+          document.getElementById('stage-passcode').style.display = 'none';
+          document.body.classList.add('candle-mode');
+          document.getElementById('stage-candle').style.display = 'flex';
+        }, 300);
+      } else {
+        const dotsContainer = document.getElementById('dots-container');
+        dotsContainer.classList.add('error');
+        setTimeout(() => {
+          dotsContainer.classList.remove('error');
+          enteredPin = "";
+          updateDots();
+        }, 500);
+      }
+    }
+
+    let candleBlown = false;
+    function blowCandle() {
+      if (candleBlown) return;
+      candleBlown = true;
+
+      document.getElementById('flame').classList.add('blown');
+      document.getElementById('candle-glow').style.opacity = '0';
+      document.getElementById('smoke').classList.add('active');
+      document.getElementById('ember').classList.add('glowing');
+
+      document.getElementById('candle-text').textContent = "عسى كل أمانيك ودعواتك تتحقق بهالسنة وكل السنين الجاية يا رب 🤍";
+      document.getElementById('candle-subtext').textContent = "";
+
+      setTimeout(() => {
+        document.body.classList.remove('candle-mode');
+        document.getElementById('stage-candle').style.display = 'none';
+        document.getElementById('stage-prep').style.display = 'flex';
+      }, 3000);
+    }
+
+    function enterStory() {
+      document.getElementById('stage-prep').style.display = 'none';
+      document.getElementById('stage-main').style.display = 'flex';
+    }
+
+    let currentIdx = 0;
+    const slides = document.querySelectorAll('.slide');
+    const lines = document.querySelectorAll('.story-line');
+    const counter = document.getElementById('counter');
+    const btnBack = document.getElementById('btn-back');
+    const btnNext = document.getElementById('btn-next');
+
+    function goTo(index) {
+      if (index < 0 || index >= slides.length) return;
+
+      slides[currentIdx].classList.remove('active');
+      slides[index].classList.add('active');
+
+      lines.forEach((line, i) => {
+        line.classList.remove('active', 'filled');
+        if (i < index) line.classList.add('filled');
+        if (i === index) line.classList.add('active');
+      });
+
+      currentIdx = index;
+      counter.textContent = `${currentIdx + 1} من ${slides.length}`;
+      btnBack.disabled = currentIdx === 0;
+
+      if (currentIdx === slides.length - 1) {
+        btnNext.textContent = "من البداية ↺";
+      } else {
+        btnNext.textContent = "التالي";
+      }
+    }
+
+    function changeSlide(step) {
+      if (step === 1 && currentIdx === slides.length - 1) {
+        goTo(0);
+      } else {
+        goTo(currentIdx + step);
+      }
+    }
+
+    function triggerPinkCelebration() {
+      const closed = document.getElementById('closed-seal');
+      const opened = document.getElementById('opened-seal');
+
+      closed.style.opacity = '0';
+      closed.style.transform = 'scale(0.9)';
+      closed.style.transition = 'all 0.3s ease';
+
+      setTimeout(() => {
+        closed.style.display = 'none';
+        opened.classList.add('show-slow');
+      }, 250);
+
+      launchPinkCannons();
+    }
+
+    function launchPinkCannons() {
+      const canvas = document.getElementById('confetti-canvas');
+      canvas.style.display = 'block';
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width = window.innerWidth;
+      const h = canvas.height = window.innerHeight;
+
+      const particles = [];
+      const pinkShades = [
+        '#f472b6', '#fda4af', '#fb7185', 
+        '#fbcfe8', '#be6179', '#ffffff', '#ffd1dc'
+      ];
+
+      for (let i = 0; i < 70; i++) {
+        particles.push({
+          x: 0,
+          y: Math.random() * 50,
+          vx: Math.random() * 8 + 3,
+          vy: Math.random() * 5 + 2,
+          sizeW: Math.random() * 11 + 6,
+          sizeH: Math.random() * 7 + 4,
+          color: pinkShades[Math.floor(Math.random() * pinkShades.length)],
+          rotation: Math.random() * 360,
+          rotSpeed: (Math.random() - 0.5) * 8,
+          wobble: 0,
+          wobbleSpeed: Math.random() * 0.1 + 0.05,
+          opacity: 1
+        });
+      }
+
+      for (let i = 0; i < 70; i++) {
+        particles.push({
+          x: w,
+          y: Math.random() * 50,
+          vx: -(Math.random() * 8 + 3),
+          vy: Math.random() * 5 + 2,
+          sizeW: Math.random() * 11 + 6,
+          sizeH: Math.random() * 7 + 4,
+          color: pinkShades[Math.floor(Math.random() * pinkShades.length)],
+          rotation: Math.random() * 360,
+          rotSpeed: (Math.random() - 0.5) * 8,
+          wobble: 0,
+          wobbleSpeed: Math.random() * 0.1 + 0.05,
+          opacity: 1
+        });
+      }
+
+      let frameCount = 0;
+      function render() {
+        ctx.clearRect(0, 0, w, h);
+
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vx *= 0.985;
+          p.vy += 0.09;
+          p.rotation += p.rotSpeed;
+          p.wobble += p.wobbleSpeed;
+
+          if (frameCount > 140) p.opacity -= 0.012;
+
+          ctx.save();
+          ctx.translate(p.x + Math.sin(p.wobble) * 6, p.y);
+          ctx.rotate((p.rotation * Math.PI) / 180);
+          ctx.globalAlpha = Math.max(0, p.opacity);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.sizeW / 2, -p.sizeH / 2, p.sizeW, p.sizeH);
+          ctx.restore();
+        });
+
+        frameCount++;
+        if (frameCount < 240 && particles.some(p => p.opacity > 0)) {
+          requestAnimationFrame(render);
+        } else {
+          ctx.clearRect(0, 0, w, h);
+          canvas.style.display = 'none';
+        }
+      }
+      render();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      const passcodeStage = document.getElementById('stage-passcode');
+      if (passcodeStage && passcodeStage.style.display !== 'none') {
+        if (e.key >= '0' && e.key <= '9') pressKey(e.key);
+        else if (e.key === 'Backspace') deleteKey();
+      }
+
+      const mainStage = document.getElementById('stage-main');
+      if (mainStage && mainStage.style.display === 'flex') {
+        if (e.key === 'ArrowLeft') changeSlide(1);
+        if (e.key === 'ArrowRight') changeSlide(-1);
+      }
+    });
+
+    let touchStartX = 0;
+    const touchZone = document.getElementById('touch-area');
+
+    touchZone.addEventListener('touchstart', e => {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    touchZone.addEventListener('touchend', e => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diff = touchStartX - touchEndX;
+
+      if (diff > 45) changeSlide(1);
+      else if (diff < -45) changeSlide(-1);
+    }, { passive: true });
+  </script>
+</body>
+</html>
